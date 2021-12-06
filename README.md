@@ -9,4 +9,7 @@ All infrastructure used in my courses and research is now deployed over Kubernet
 Each directory contains it's own REAME related to deploying/using those resources including useful tips and advice to consider when setting up your deployments. The list of technologies and corresponding directories is below, so look for what you need and just ignore the others.
 
 ## List of technologies
-TO-DO
+
+| Technology | directory | External Link(s) |
+| ---------- | --------- | ---------------- |
+| JupyterHub | jupyterhub | [Z2JH](https://zero-to-jupyterhub.readthedocs.io/en/latest/) and [JupyterHub](https://jupyter.org/hub) |

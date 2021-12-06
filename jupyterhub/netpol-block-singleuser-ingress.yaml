@@ -1,0 +1,48 @@
+# If you have calico installed in k3s, then this is
+# not needed...
+
+# If you -don't- have calico installed in your k3s, this
+# network policy will at least protect your singleuser
+# pods from incoming traffic (the default network policy
+# will need to be disabled, and then apply this in the
+# namespace:
+# $ kubectl -n jupyterhub apply netpol-block-singleuser-ingress.yaml
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: singleuser
+spec:
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          hub.jupyter.org/network-access-singleuser: "true"
+    ports:
+    - port: notebook-port
+      protocol: TCP
+  # - ports:
+  #   - port: 8081
+  #     protocol: TCP
+  #   to:
+  #   - podSelector:
+  #       matchLabels:
+  #         app: jupyterhub
+  #         component: hub
+  # - ports:
+  #   - port: 53
+  #     protocol: UDP
+  #   - port: 53
+  #     protocol: TCP
+  # - to:
+  #   - ipBlock:
+  #       cidr: 0.0.0.0/0
+  #       except:
+  #       - 169.254.169.254/32
+  podSelector:
+    matchLabels:
+      app: jupyterhub
+      component: singleuser-server
+  policyTypes:
+  - Ingress
+  # - Egress

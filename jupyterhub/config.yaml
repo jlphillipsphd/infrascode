@@ -1,0 +1,100 @@
+# This config contains notes on each section to modify
+# it in a useful way for production deployment.
+# However, it's designed to run "out-of-the-box" just
+# to demonstrate that the base configuration provided
+# below is stable and you can iterate until you get
+# to the solution you want.
+
+# NOTES: when using local-path storage provisioner (the
+# default for k3s) you will find your storage spread
+# across the cluster, and so all user pods will be
+# spread across the cluster. However, if you are running
+# any kind of storage provisioner which can mount the
+# user volume from anywhere in the cluster (most cloud
+# providers allow this and the nfs-subdir-provisioner
+# that I use on bare metal does this), then the user
+# scheduler will stack all user pods to fill up a node
+# before moving onto the next. I like to keep them
+# spread out across the cluster -regardless- so I
+# disable the user scheduler provided my Z2JH and
+# instead just let the default k8s scheduler do the
+# work and it spreads out user pods across the cluster
+# by default. Comment this out if you want Z2JH
+# behavior instead (stacking up a single node at a
+# time).
+scheduling:
+  userScheduler:
+    enabled: false
+
+# NOTES: You will need to generate a secret hex key
+# and should probably update the admin user appropriately.
+# The default authenticator has no security. There are
+# examples in authenticator-*.yaml for the authenticators
+# that I use - they also need additional configuration.
+hub:
+  config:
+    Authenticator:
+      admin_users:
+        - jphillips
+      enable_auth_state: True
+    CryptKeeper:
+      keys:
+      - mylongsecretkeyneedstobereplaced
+    # PASTE AUTHENTICATOR CONFIGURATION HERE
+
+# NOTES: You should pick your stack but keep
+# in mind that my stack is several gigabytes
+# in size and will take a significant amount
+# of time to pull/download.
+# I allow sudo access inside of the containers
+# and use a non-default storage provisioner so
+# make sure you check that field as well.
+singleuser:
+  image:
+    name: jupyter/minimal-notebook
+    # name: jlphillips/csci4850
+    tag: latest
+    # tag: 2021-10-15-k8s
+    pullPolicy: Always
+  uid: 0
+  cmd: start-notebook.sh
+  defaultUrl: "/lab"
+  extraEnv:
+    GRANT_SUDO: "yes"
+  memory:
+    limit: 32G
+  storage:
+    # If you use a non-default provisioner.
+    # dynamic:
+    #   storageClass: nfs-provisioner
+    homeMountPath: /home/{username}
+    capacity: 1Gi
+  # Only needed if you -do not have calico installed-.
+  # See netpol-block-singleuser-ingress.yaml for details.
+  # networkPolicy:
+  #       enabled: false
+        
+# Up to one week idle sessions...
+cull:
+  timeout: 604800
+
+# You need to configure SSL by providing
+# the appropriate cert/key below. I also
+# do not use a load balancer so instead I
+# just set the proxy to a ClusterIP.
+proxy:
+  secretToken: "myothersecretthatneedstobesethere"
+  service:
+    type: ClusterIP
+  # https:
+  #   enabled: true
+  #   type: manual
+  #   manual:
+  #     key: |
+  #       -----BEGIN PRIVATE KEY-----
+  #       Need actual key here...
+  #       -----END PRIVATE KEY-----
+  #     cert: |
+  #       -----BEGIN CERTIFICATE-----
+  #       Need actual cert here...
+  #       -----END CERTIFICATE-----
