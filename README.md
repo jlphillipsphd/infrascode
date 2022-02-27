@@ -12,4 +12,4 @@ Each directory contains it's own REAME related to deploying/using those resource
 
 | Technology | directory | External Link(s) |
 | ---------- | --------- | ---------------- |
-| JupyterHub | jupyterhub | [Z2JH](https://zero-to-jupyterhub.readthedocs.io/en/latest/) and [JupyterHub](https://jupyter.org/hub) |
+| JupyterHub | [jupyterhub](https://github.com/jlphillipsphd/infrascode/tree/main/jupyterhub) | [Z2JH](https://zero-to-jupyterhub.readthedocs.io/en/latest/) and [JupyterHub](https://jupyter.org/hub) |
