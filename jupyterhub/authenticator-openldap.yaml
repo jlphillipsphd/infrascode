@@ -406,8 +406,8 @@ hub:
               if not auth_state:
                   return
               # setup environment
-              spawner.environment['NB_UID'] = str(auth_state['uidNumber'][0])
-              # spawner.environment['NB_USER'] = auth_state['uid'][0]
+              # spawner.environment['NB_UID'] = str(auth_state['uidNumber'][0])
+              spawner.environment['NB_USER'] = auth_state['uid'][0]
               # spawner.environment['NB_GID'] = str(auth_state['gidNumber'][0])
       c.JupyterHub.authenticator_class = LDAPAuthenticatorInfoUID
       # windc2.csd.mtsu.edu
