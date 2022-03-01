@@ -10,7 +10,7 @@ helm upgrade --cleanup-on-fail \
   --install jupyterhub jupyterhub/jupyterhub \
   --namespace jupyterhub \
   --create-namespace \
-  --version=1.1.3 \
+  --version=1.2.0 \
   --timeout=60m \
   --values config.yaml
 

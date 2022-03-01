@@ -54,7 +54,7 @@ singleuser:
     name: jupyter/minimal-notebook
     # name: jlphillips/csci4850
     tag: latest
-    # tag: 2021-10-15-k8s
+    # tag: 2021-12-23-k8s
     pullPolicy: Always
   uid: 0
   cmd: start-notebook.sh
